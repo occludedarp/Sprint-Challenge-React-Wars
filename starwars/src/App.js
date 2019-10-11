@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import axios from 'axios';
+import CharacterCard from './CharacterCard'
+import { Container, Row} from 'reactstrap';
 
 const App = () => {
   // Try to think through what state you'll need for this app before starting. Then build out
@@ -12,8 +14,8 @@ const [starWarsChar, setStarWarsChar] = useState([]);
 useEffect(() => {
   axios.get(`https://swapi.co/api/people/`)
     .then( response => {
-      console.log(response.data.results)
-      // setStarWarsChar(response.data.results)
+      // console.log(response.data.results)
+      setStarWarsChar(response.data.results)
     })
     .catch( error => {
       console.log( "no data was returned", error)
@@ -23,12 +25,23 @@ useEffect(() => {
   return (
     <div className="App">
       <h1 className="Header">React Wars</h1>
-      {/* <p>{starWarsChar.map((details) => (
-        characterName={details.name}
-      ))}
-      </p> */}
+    <Container>
+      <Row>
+      {starWarsChar.map((details, index) => {
+        return (
+          <CharacterCard
+            key={index}
+            characterName={details.name}
+            characterHeight={details.height}
+            characterEyeColor={details.eye_color}
+          />
+        )
+      })}
+      </Row>
+    </Container>
     </div>
   );
+
 }
 
 export default App;
